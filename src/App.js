@@ -13,7 +13,7 @@ function App() {
   // const [count, setCount] = useState(0);
   const [score, setScore] = useState(0);
   const [status, setStatus] = useState(STATUS.INIT);
-  const [questions, setQuestions] = useState(genAllQuestionData());
+  const [questions] = useState(genAllQuestionData());
 
   function start() {
     setStartTime(new Date().getTime());
