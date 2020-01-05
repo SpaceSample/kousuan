@@ -76,7 +76,7 @@ function genQuestionData(type) {
   }
 }
 
-function Question({data}){
+function Question({data, index}){
   const [answer, setAnswer] = useState('');
   useEffect(() => {
     setAnswer(data.answer);
@@ -88,7 +88,11 @@ function Question({data}){
   };
 
   return (
-    <div className={Style.question}>{str}<input type="text" value={answer} onChange={onChange}/></div>
+    <div>
+      <div className={Style.index}>第{index + 1}题：</div>
+      <div className={Style.question}>{str}<input type="text" value={answer} onChange={onChange}/></div>
+    </div>
+    
   );
 }
 

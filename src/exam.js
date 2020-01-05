@@ -18,7 +18,7 @@ function Exam({data}) {
   return (
     <div className={Style.exam}>
       <img src="./hua.png" alt="hua"/>
-      <Question data={qd} answer={qd.answer}/>
+      <Question data={qd} answer={qd.answer} index={index}/>
       <div>
         <button onClick={goPrevious} disabled={index <= 0}>前一题</button>
         <button onClick={goNext} disabled={index >= (data.length - 1)}>后一题</button>
