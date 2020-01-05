@@ -81,10 +81,10 @@ function App() {
             {(score < allQuestionData.length/4*3) && (<div>继续努力！<span role="img" aria-label="come on">💪💪💪</span></div>)}
             {(score >= allQuestionData.length/4*3) && (score < allQuestionData.length) && (<div>成绩不错啊！<span role="img" aria-label="smile">🙂🙂🙂</span></div>)}
             {(score === allQuestionData.length) && (<div>你太棒啦，完全正确<span role="img" aria-label="great">👍👍👍</span></div>)}
+            <div><button onClick={restart}>重新开始</button></div>
             <div>
               {allQuestionData.map((qd, index) => (<Result data={qd} key={index} />))}
             </div>
-            <div><button onClick={restart}>重新开始</button></div>
           </div>
         )}
       </header>
