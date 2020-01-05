@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Style from './question.module.css';
-import { queryByDisplayValue } from '@testing-library/react';
+
 const randomInt = (min, max) => {
   const range = (max > min ? (max - min) : (min - max)) + 1;
   return Math.floor(Math.random() * range) + min;
@@ -78,19 +78,60 @@ function genQuestionData(type) {
 
 function Question({data, index}){
   const [answer, setAnswer] = useState('');
+  const [keyboardOpen, setKeyboardOpen] = useState(true);
   useEffect(() => {
     setAnswer(data.answer);
   }, [data]);
   const str = data.toString() + ' = ';
+
+  const setAnswerVaule = v => {
+    setAnswer(v);
+    data.answer = v;
+  };
+
   const onChange = e => {
-    setAnswer(e.target.value);
-    data.answer = e.target.value;
+    setAnswerVaule(e.target.value);
+  }
+
+  const input = v => {
+    if (v === 'back') {
+      if(answer) {
+        setAnswerVaule(answer.substring(0, answer.length - 1));
+      }
+    } else if (v === 'close') {
+      setKeyboardOpen(false);
+    } else {
+      setAnswerVaule(answer + v);
+    }
   };
 
   return (
     <div>
       <div className={Style.index}>第{index + 1}题：</div>
       <div className={Style.question}>{str}<input type="text" value={answer} onChange={onChange}/></div>
+      {keyboardOpen && (<div className={Style.keyboard}>
+        <div>
+          <button onClick={()=>input('1')}>1</button>
+          <button onClick={()=>input('2')}>2</button>
+          <button onClick={()=>input('3')}>3</button>
+        </div>
+        <div>
+          <button onClick={()=>input('4')}>4</button>
+          <button onClick={()=>input('5')}>5</button>
+          <button onClick={()=>input('6')}>6</button>
+        </div>
+        <div>
+          <button onClick={()=>input('7')}>7</button>
+          <button onClick={()=>input('8')}>8</button>
+          <button onClick={()=>input('9')}>9</button>
+        </div>
+        <div>
+          <button onClick={()=>input('back')}>{'<-'}</button>
+          <button onClick={()=>input('0')}>0</button>
+          <button onClick={()=>input('close')}>x</button>
+        </div>
+      </div>)}
+      {!keyboardOpen && (<button onClick={() => setKeyboardOpen(true)}>数字键盘</button>)}
     </div>
     
   );

@@ -13,7 +13,7 @@
 }
 
 .result {
-  margin: 5px 36px;
+  margin: 5px 50px;
   text-align: left;
 }
 
@@ -24,4 +24,10 @@
 .question input {
   font-size: 1em;
   width: 80px;
+}
+
+.keyboard button{
+  width: 50px;
+  margin: 0;
+  border-radius: 0;
 }
