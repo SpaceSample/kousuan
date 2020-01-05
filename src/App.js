@@ -59,7 +59,11 @@ function App() {
             <button onClick={() => start('20+-')}>二十以内加减法</button>
             <br/>
             <button onClick={() => start('99*/')}>九九乘除法</button>
-            <div className={Style.info}>谨以此程序向即忙工作又得完成老师布置的作业的宝爸宝妈们致敬！</div>
+            <div className={Style.info}>
+              谨以此程序向即忙工作又得完成老师布置的作业的宝爸宝妈们致敬！
+              <br/>
+              如有遇到问题或者建议请点<a href="https://github.com/SpaceSample/kousuan/issues">这里</a>。
+            </div>
           </div>
         )}
 
