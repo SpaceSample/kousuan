@@ -70,7 +70,7 @@ function App() {
         )}
 
         {status === STATUS.END && (
-          <div>
+          <div class={Style.end}>
             <div>用时<span>{(endTime-startTime)/1000}</span>秒</div>
             <div>共{allQuestionData.length}道题，其中{score}道正确</div>
             {(score < allQuestionData.length/4*3) && (<div>继续努力！<span role="img" aria-label="come on">💪💪💪</span></div>)}
