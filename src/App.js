@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
-import {Question, genQuestionData} from './question';
+import {genQuestionData} from './question';
+import Exam from './exam';
 
 const STATUS = {
   INIT:1,
@@ -13,16 +14,17 @@ function App() {
   // const [count, setCount] = useState(0);
   const [score, setScore] = useState(0);
   const [status, setStatus] = useState(STATUS.INIT);
-  const [questions] = useState(genAllQuestionData());
+  const [questions, setQuestions] = useState([]);
 
-  function start() {
+  function start(type) {
+    setQuestions(genAllQuestionData(type));
     setStartTime(new Date().getTime());
     setStatus( STATUS.PLAYING);
   }
-  function genAllQuestionData(){
+  function genAllQuestionData(type){
     const data = [];
     for (let i=0;i<20;i++){
-      data.push(genQuestionData()); 
+      data.push(genQuestionData(type)); 
     }
     return data;
   }
@@ -33,7 +35,7 @@ function App() {
       if(!qd.answer){
         return;
       }
-      if (qd.right) {
+      if (qd.isCorrect()) {
         score ++;
       }
     });
@@ -41,15 +43,23 @@ function App() {
     setStatus(STATUS.END);
   }
 
+  function restart(){
+    setScore(0);
+    setStatus(STATUS.INIT);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
         {status === STATUS.INIT && (
-          <button onClick={start}>开始</button>
+          <div>
+            <button onClick={() => start('20+-')}>二十以内加减法</button>
+            <button onClick={() => start('99*/')}>九九乘除法</button>
+          </div>
         )}
 
         {status === STATUS.PLAYING && (
-          questions.map((qd, index) => <Question data={qd} key={index} />)
+          <Exam data={questions} />
         )}
         {status === STATUS.PLAYING && (
           <button onClick={end}>交卷</button>
@@ -58,7 +68,8 @@ function App() {
         {status === STATUS.END && (
           <div>
             <div>用时<span>{(endTime-startTime)/1000}</span>秒</div>
-            <div>得分<span>{score}</span></div>
+            <div>共{questions.length}道题，其中{score}道正确</div>
+            <div><button onClick={restart}>重新开始</button></div>
           </div>
         )}
       </header>
