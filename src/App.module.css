@@ -22,3 +22,9 @@
 .end {
   margin-top: 12px;
 }
+
+.info {
+  font-size: 10px;
+  position: absolute;
+  bottom: 12px;
+}
