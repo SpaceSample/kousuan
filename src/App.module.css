@@ -1,0 +1,20 @@
+.app {
+  display: block;
+  margin: 0 auto;
+  width: 360px;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.start {
+  margin-top: 10px;
+}
+
+.start>button{
+  width: 200px;
+}
+
+.welcome {
+  font-size: 1.2em;
+  margin: 10px;
+}

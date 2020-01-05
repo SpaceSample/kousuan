@@ -1,0 +1,21 @@
+.isCorrect {
+  background-color: #74a070;
+}
+
+.isWrong {
+  background-color: #b16866;
+  text-decoration: line-through;
+}
+
+.result {
+  margin: 5px;
+}
+
+.question {
+  font-size: 2.5em;
+}
+
+.question input {
+  font-size: 1em;
+  width: 80px;
+}

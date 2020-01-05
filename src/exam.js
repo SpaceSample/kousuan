@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Question} from './question';
+import Style from './exam.module.css';
 
 function Exam({data}) {
   const [index, setIndex] = useState(0);
@@ -15,7 +16,8 @@ function Exam({data}) {
     }
   };
   return (
-    <div>
+    <div className={Style.exam}>
+      <img src="./hua.png" alt="hua"/>
       <Question data={qd} answer={qd.answer}/>
       <div>
         <button onClick={goPrevious} disabled={index <= 0}>前一题</button>

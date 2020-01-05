@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import './App.css';
-import {genQuestionData} from './question';
+import Style from './App.module.css';
+import {genQuestionData, Result} from './question';
 import Exam from './exam';
 
 const STATUS = {
@@ -14,7 +14,7 @@ function App() {
   // const [count, setCount] = useState(0);
   const [score, setScore] = useState(0);
   const [status, setStatus] = useState(STATUS.INIT);
-  const [questions, setQuestions] = useState([]);
+  const [allQuestionData, setQuestions] = useState([]);
 
   function start(type) {
     setQuestions(genAllQuestionData(type));
@@ -31,7 +31,7 @@ function App() {
   function end(){
     setEndTime(new Date().getTime());
     let score =0;
-    questions.forEach(qd => {
+    allQuestionData.forEach(qd => {
       if(!qd.answer){
         return;
       }
@@ -49,17 +49,21 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className={Style.app}>
+      
       <header className="App-header">
         {status === STATUS.INIT && (
-          <div>
+          <div className={Style.start}>
+            <img src="./hua.png" alt="hua"/>
+            <div className={Style.welcome}>欢迎参加口算大挑战！</div>
             <button onClick={() => start('20+-')}>二十以内加减法</button>
+            <br/>
             <button onClick={() => start('99*/')}>九九乘除法</button>
           </div>
         )}
 
         {status === STATUS.PLAYING && (
-          <Exam data={questions} />
+          <Exam data={allQuestionData} />
         )}
         {status === STATUS.PLAYING && (
           <button onClick={end}>交卷</button>
@@ -68,7 +72,13 @@ function App() {
         {status === STATUS.END && (
           <div>
             <div>用时<span>{(endTime-startTime)/1000}</span>秒</div>
-            <div>共{questions.length}道题，其中{score}道正确</div>
+            <div>共{allQuestionData.length}道题，其中{score}道正确</div>
+            {(score < allQuestionData.length/4*3) && (<div>继续努力！<span role="img" aria-label="come on">💪💪💪</span></div>)}
+            {(score >= allQuestionData.length/4*3) && (score < allQuestionData.length) && (<div>成绩不错啊！<span role="img" aria-label="smile">🙂🙂🙂</span></div>)}
+            {(score === allQuestionData.length) && (<div>你太棒啦，完全正确<span role="img" aria-label="great">👍👍👍</span></div>)}
+            <div>
+              {allQuestionData.map(qd => (<Result data={qd} />))}
+            </div>
             <div><button onClick={restart}>重新开始</button></div>
           </div>
         )}

@@ -1,17 +1,6 @@
 import React, {useState, useEffect} from 'react';
-
-// function genRandom() {
-//   return Math.floor(Math.random()*20);
-// }
-
-// function genFuhao() {
-//   return Math.random()>0.5;
-// }
-
-// function cal(n1, fuhao, n2){
-//   return fuhao ? (n1 + n2) : (n1 - n2);
-// }
-
+import Style from './question.module.css';
+import { queryByDisplayValue } from '@testing-library/react';
 const randomInt = (min, max) => {
   const range = (max > min ? (max - min) : (min - max)) + 1;
   return Math.floor(Math.random() * range) + min;
@@ -99,8 +88,18 @@ function Question({data}){
   };
 
   return (
-    <div>{str}<input type="text" value={answer} onChange={onChange}/></div>
+    <div className={Style.question}>{str}<input type="text" value={answer} onChange={onChange}/></div>
   );
 }
 
-export {Question, genQuestionData};
+function Result({data}) {
+  const isCorrect = data.isCorrect();
+  return (
+    <div className={Style.result}>
+      <span className={(isCorrect ? Style.isCorrect : Style.isWrong)}>{data.toString() + ' = ' + data.answer}</span>
+      {!isCorrect && (<span>{data.res}</span>)}
+    </div>
+  );
+}
+
+export {Question, genQuestionData, Result};
