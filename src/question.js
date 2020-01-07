@@ -6,16 +6,77 @@ const randomInt = (min, max) => {
   return Math.floor(Math.random() * range) + min;
 };
 
+class OperatorTreeNode {
+  constructor(left, right, val){
+    this.val = val;
+    this.left = left;
+    this.right = right;
+  }
+
+  get priority(){
+    if ((typeof this.val) === 'number'){
+      return 10000;
+    } else if (this.val === '×' || this.val === '÷') {
+      return 2;
+    } else if (this.val === '+' || this.val === '-') {
+      return 1;
+    }
+    return 0;
+  }
+
+  get result() {
+    if ((typeof this.val) === 'number'){
+      return this.val;
+    }
+    const leftRes =(typeof this.left) === 'number' ? this.left : this.left.result;
+    const rightRes =(typeof this.right) === 'number' ? this.right : this.right.result;
+    if(this.val === '+') {
+      return leftRes + rightRes;
+    } else if(this.val === '-') {
+      return leftRes - rightRes;
+    } else if(this.val === '×') {
+      return leftRes * rightRes;
+    } else if(this.val === '÷') {
+      return leftRes / rightRes;
+    }
+    return 0;
+  }
+
+  toString() {
+    if ((typeof this.val) === 'number'){
+      return this.val.toString();
+    }
+
+    let leftStr = this.left.toString();
+    if (this.left instanceof OperatorTreeNode) {
+      if (this.left.priority < this.priority){
+        leftStr = `(${leftStr})`;
+      }
+    }
+
+    let rightStr = this.right.toString();
+    if (this.right instanceof OperatorTreeNode) {
+      if (this.right.priority < this.priority){
+        rightStr = `(${rightStr})`;
+      }
+    }
+
+    return `${leftStr} ${this.val} ${rightStr}`;
+  }
+}
+
 class QuestionData {
-  constructor(n1, n2, operator){
-    this.n1 = n1;
-    this.n2 = n2;
-    this.operator = operator;
+  constructor(operatorTree){
+    this.operatorTree = operatorTree;
     this.answer = '';
   }
 
+  get res(){
+    return this.operatorTree.result;
+  }
+
   toString(){
-    return this.n1 + this.operator + this.n2;
+    return this.operatorTree.toString();
   }
 
   isCorrect(){
@@ -23,54 +84,34 @@ class QuestionData {
   }
 }
 
-class AddSubQuestionData extends QuestionData{
-  constructor(n1, n2, operator){
-    super(n1, n2, operator);
-    this.res = operator === '-' ? (n1 - n2) : (n1 + n2);
-  }
-}
-
-AddSubQuestionData.random20 = () => {
+QuestionData.random20 = () => {
   const n1 = randomInt(0, 20);
   const n2 = randomInt(0, 20);
   const operator = randomInt(0, 1) ? '+' : '-';
-  const data = new AddSubQuestionData(n1, n2, operator);
+  const data = new QuestionData(new OperatorTreeNode(n1, n2, operator));
   if(data.res<0 || data.res>20){
-    return AddSubQuestionData.random20();
+    return QuestionData.random20();
   }
   return data;
 }
 
-class MultiDivQuestionData extends QuestionData{
-  constructor(n1, n2, operator){
-    super(n1, n2, operator);
-    this.res = operator === '÷' ? (n1 / n2) : (n1 * n2);
-    if (operator === '÷') {
-      if (n2 === 0) {
-        throw new Error(n1 + ' ÷ 0?');
-      }
-      const product = n1 * n2;
-      this.res = n1;
-      this.n1 = product;
-    } else {
-      this.res = n1 * n2;
-    }
-  }
-}
-
-MultiDivQuestionData.random99 = () => {
-  const n1 = randomInt(0, 9);
+QuestionData.random99 = () => {
+  let n1 = randomInt(0, 9);
   const n2 = randomInt(1, 9);
   const operator = randomInt(0, 1) ? '×' : '÷';
-  const data = new MultiDivQuestionData(n1, n2, operator);
+  if (operator === '÷') {
+    const product = n1 * n2;
+    n1 = product;
+  }
+  const data = new QuestionData(new OperatorTreeNode(n1, n2, operator));
   return data;
 }
 
 function genQuestionData(type) {
   if (type === '20+-') {
-    return AddSubQuestionData.random20();
+    return QuestionData.random20();
   } else if (type === '99*/') {
-    return MultiDivQuestionData.random99();
+    return QuestionData.random99();
   } else {
     throw new Error('Unknown type');
   }
