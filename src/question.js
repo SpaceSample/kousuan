@@ -2,8 +2,15 @@ import React, {useState, useEffect} from 'react';
 import Style from './question.module.css';
 
 const randomInt = (min, max) => {
+  if(max === min) {
+    return min;
+  }
   const range = (max > min ? (max - min) : (min - max)) + 1;
   return Math.floor(Math.random() * range) + min;
+};
+
+const randomBool = () => {
+  return randomInt(0, 1) > 0;
 };
 
 class OperatorTreeNode {
@@ -61,7 +68,7 @@ class OperatorTreeNode {
       }
     }
 
-    return `${leftStr} ${this.val} ${rightStr}`;
+    return `${leftStr}${this.val}${rightStr}`;
   }
 }
 
@@ -84,34 +91,77 @@ class QuestionData {
   }
 }
 
-QuestionData.random20 = () => {
-  const n1 = randomInt(0, 20);
-  const n2 = randomInt(0, 20);
-  const operator = randomInt(0, 1) ? '+' : '-';
-  const data = new QuestionData(new OperatorTreeNode(n1, n2, operator));
-  if(data.res<0 || data.res>20){
-    return QuestionData.random20();
+const random20 = () => {
+  const dataList = [];
+  for (let i=0;i<5;i++){
+    const n1 = randomInt(3, 9);
+    const n2 = randomInt(10-n1, 9);
+    const on = randomBool() ? new OperatorTreeNode(n1, n2, '+') : new OperatorTreeNode(n2, n1, '+'); 
+    const data = new QuestionData(on);
+    dataList.push(data);
   }
-  return data;
-}
 
-QuestionData.random99 = () => {
-  let n1 = randomInt(0, 9);
-  const n2 = randomInt(1, 9);
-  const operator = randomInt(0, 1) ? '×' : '÷';
-  if (operator === '÷') {
-    const product = n1 * n2;
-    n1 = product;
+  dataList.push(
+    new QuestionData(
+      new OperatorTreeNode(
+        randomInt(0, 2), 
+        randomInt(0, 9), 
+        randomBool() ? '+' : '-')
+    )
+  );
+
+  for (let i=0;i<5;i++){
+    const n1 = randomInt(3, 9);
+    const n2 = randomInt(10-n1, 9);
+    const data = new QuestionData(new OperatorTreeNode(n1 + n2, n2, '-'));
+    dataList.push(data);
   }
-  const data = new QuestionData(new OperatorTreeNode(n1, n2, operator));
-  return data;
-}
+
+  dataList.push(
+    new QuestionData(
+      new OperatorTreeNode(
+        randomInt(0, 2), 
+        randomInt(10, 18), 
+        randomBool() ? '+' : '-')
+    )
+  );
+
+  for (let i=0;i<5;i++){
+    const n1 = randomInt(3, 9);
+    const n2 = randomInt(10-n1, 9);
+    const on1 = randomBool() ? (
+        randomBool() ? new OperatorTreeNode(n1, n2, '+') : new OperatorTreeNode(n2, n1, '+')
+      ) : (new OperatorTreeNode(n2 + n1, n1, '-'))
+
+    const on2 = randomBool() ? new OperatorTreeNode(on1, randomInt(0, 20 - on1.result), '+') : new OperatorTreeNode(on1, randomInt(0, on1.result), '-'); 
+    const data = new QuestionData(on2);
+    dataList.push(data);
+  }
+  dataList.sort((a, b) => randomInt(-1, 1));
+  return dataList;
+};
+
+const random99 = () => {
+  const dataList = [];
+  for (let i=0;i<20;i++){
+    let n1 = randomInt(0, 9);
+    const n2 = randomInt(1, 9);
+    const operator = randomBool() ? '×' : '÷';
+    if (operator === '÷') {
+      const product = n1 * n2;
+      n1 = product;
+    }
+    const data = new QuestionData(new OperatorTreeNode(n1, n2, operator));
+    dataList.push(data);
+  }
+  return dataList;
+};
 
 function genQuestionData(type) {
   if (type === '20+-') {
-    return QuestionData.random20();
+    return random20();
   } else if (type === '99*/') {
-    return QuestionData.random99();
+    return random99();
   } else {
     throw new Error('Unknown type');
   }
@@ -167,7 +217,7 @@ function Question({data, index}){
           <button onClick={()=>input('9')}>9</button>
         </div>
         <div>
-          <button onClick={()=>input('back')}>{'<-'}</button>
+          <button onClick={()=>input('back')}>{'<='}</button>
           <button onClick={()=>input('0')}>0</button>
           <button onClick={()=>input('close')}>x</button>
         </div>

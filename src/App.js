@@ -22,11 +22,7 @@ function App() {
     setStatus( STATUS.PLAYING);
   }
   function genAllQuestionData(type){
-    const data = [];
-    for (let i=0;i<20;i++){
-      data.push(genQuestionData(type)); 
-    }
-    return data;
+    return genQuestionData(type);
   }
   function end(){
     setEndTime(new Date().getTime());
