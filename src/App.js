@@ -54,6 +54,12 @@ function App() {
             <div className={Style.welcome}>欢迎参加口算大挑战！</div>
             <button onClick={() => start('20+-')}>二十以内加减法</button>
             <br/>
+            <button onClick={() => start('100+-')}>一百以内加减法</button>
+            <br/>
+            <button onClick={() => start('1000+-')}>一千以内加减法</button>
+            <br/>
+            <button onClick={() => start('10000+-')}>一万以内加减法</button>
+            <br/>
             <button onClick={() => start('99*/')}>九九乘除法</button>
             <br/>
             <button onClick={() => start('+-*/')}>四则运算</button>
