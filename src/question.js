@@ -109,14 +109,16 @@ const random20 = () => {
     dataList.push(data);
   }
 
-  dataList.push(
-    new QuestionData(
-      new OperatorTreeNode(
-        randomInt(0, 2), 
-        randomInt(0, 9), 
-        randomBool() ? '+' : '-')
-    )
-  );
+  for (let i=0;i<5;i++){
+    dataList.push(
+      new QuestionData(
+        new OperatorTreeNode(
+          randomInt(3, 18), 
+          randomInt(0, 2), 
+          randomBool() ? '+' : '-')
+      )
+    );
+  }
 
   for (let i=0;i<5;i++){
     const n1 = randomInt(3, 9);
@@ -124,15 +126,6 @@ const random20 = () => {
     const data = new QuestionData(new OperatorTreeNode(n1 + n2, n2, '-'));
     dataList.push(data);
   }
-
-  dataList.push(
-    new QuestionData(
-      new OperatorTreeNode(
-        randomInt(0, 2), 
-        randomInt(10, 18), 
-        randomBool() ? '+' : '-')
-    )
-  );
 
   for (let i=0;i<5;i++){
     const n1 = randomInt(3, 9);
@@ -210,9 +203,31 @@ const random4 = () => {
   return dataList;
 };
 
+const randomAddSub = (scope) => {
+  const dataList = [];
+  for (let i=0;i<20;i++){
+    let n1 = randomInt(0, scope);
+    const n2 = randomInt(0, scope - n1);
+    const operator = randomBool() ? '+' : '-';
+    if (operator === '-') {
+      const tmp = n1 + n2;
+      n1 = tmp;
+    }
+    const data = new QuestionData(new OperatorTreeNode(n1, n2, operator));
+    dataList.push(data);
+  }
+  return dataList;
+};
+
 function genQuestionData(type) {
   if (type === '20+-') {
     return random20();
+  } else if (type === '100+-') {
+    return randomAddSub(100);
+  } else if (type === '1000+-') {
+    return randomAddSub(1000);
+  } else if (type === '10000+-') {
+    return randomAddSub(10000);
   } else if (type === '99*/') {
     return random99();
   } else if (type === '+-*/') {
