@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/kousuan/r/static/css/main.63408a33.chunk.css",
+    "main.css": "/kousuan/r/static/css/main.a6f459f0.chunk.css",
     "main.js": "/kousuan/r/static/js/main.3453ca19.chunk.js",
     "main.js.map": "/kousuan/r/static/js/main.3453ca19.chunk.js.map",
     "runtime-main.js": "/kousuan/r/static/js/runtime-main.b14d58a2.js",
@@ -8,15 +8,15 @@
     "static/js/2.c2dcccf6.chunk.js": "/kousuan/r/static/js/2.c2dcccf6.chunk.js",
     "static/js/2.c2dcccf6.chunk.js.map": "/kousuan/r/static/js/2.c2dcccf6.chunk.js.map",
     "index.html": "/kousuan/r/index.html",
-    "precache-manifest.5b5ba7f68bd40debdbbd080abaa69c76.js": "/kousuan/r/precache-manifest.5b5ba7f68bd40debdbbd080abaa69c76.js",
+    "precache-manifest.e5e058555de81adc0c02a9b09f2aef17.js": "/kousuan/r/precache-manifest.e5e058555de81adc0c02a9b09f2aef17.js",
     "service-worker.js": "/kousuan/r/service-worker.js",
-    "static/css/main.63408a33.chunk.css.map": "/kousuan/r/static/css/main.63408a33.chunk.css.map",
+    "static/css/main.a6f459f0.chunk.css.map": "/kousuan/r/static/css/main.a6f459f0.chunk.css.map",
     "static/js/2.c2dcccf6.chunk.js.LICENSE": "/kousuan/r/static/js/2.c2dcccf6.chunk.js.LICENSE"
   },
   "entrypoints": [
     "static/js/runtime-main.b14d58a2.js",
     "static/js/2.c2dcccf6.chunk.js",
-    "static/css/main.63408a33.chunk.css",
+    "static/css/main.a6f459f0.chunk.css",
     "static/js/main.3453ca19.chunk.js"
   ]
 }
