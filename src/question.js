@@ -71,7 +71,7 @@ class OperatorTreeNode {
 
     let rightStr = this.right.toString();
     if (this.right instanceof OperatorTreeNode) {
-      if (this.right.priority < this.priority){
+      if (this.right.priority <= this.priority){
         rightStr = `(${rightStr})`;
       }
     }
