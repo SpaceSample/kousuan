@@ -13,6 +13,14 @@ const randomBool = () => {
   return randomInt(0, 1) > 0;
 };
 
+const initArray = (size, initFunction) => {
+  const arr = new Array(size);
+  for(let i=0;i<size;i++){
+    arr[i] = initFunction(i);
+  }
+  return arr;
+};
+
 class OperatorTreeNode {
   constructor(left, right, val){
     this.val = val;
@@ -157,11 +165,58 @@ const random99 = () => {
   return dataList;
 };
 
+const genOneRandom4 = (steps) => {
+  if(steps<1){
+    throw new Error('Illegal arguments');
+  }
+  const stepOrder = initArray(steps, i => i).sort(() => randomInt(-1, 1));
+  const operatorChoice = ['+', '-', '×', '÷'];
+  const operatorValue = initArray(steps, () => operatorChoice[randomInt(0, 3)]);
+  const nodeMap = initArray(steps+1, () => randomInt(0, 9));
+
+  for (let i=0;i<steps;i++){
+    const operatorIndex = stepOrder[i];
+    const leftNode = nodeMap[operatorIndex];
+    const rightNode = nodeMap[operatorIndex + 1];
+    const node = new OperatorTreeNode(leftNode, rightNode, operatorValue[operatorIndex]);
+    nodeMap.forEach((n, i) => {
+      if (typeof n !== 'number') {
+        if (n === leftNode || n === rightNode) {
+          nodeMap[i] = node;
+        }
+      }
+    });
+    nodeMap[operatorIndex] = node;
+    nodeMap[operatorIndex + 1] = node;
+  }
+  return nodeMap[0];
+}
+
+const random4 = () => {
+  const dataList = [];
+  for (let i=0;i<20;i++){
+    while(true){
+      
+      const node = genOneRandom4(3);
+      const r = node.result;
+      console.log('===');
+      if (r !== Infinity && r !== -Infinity && r === Math.floor(r) ) {
+        const data = new QuestionData(node);
+        dataList.push(data);
+        break;
+      }
+    }
+  }
+  return dataList;
+};
+
 function genQuestionData(type) {
   if (type === '20+-') {
     return random20();
   } else if (type === '99*/') {
     return random99();
+  } else if (type === '+-*/') {
+    return random4();
   } else {
     throw new Error('Unknown type');
   }
@@ -173,7 +228,7 @@ function Question({data, index}){
   useEffect(() => {
     setAnswer(data.answer);
   }, [data]);
-  const str = data.toString() + ' = ';
+  const str = data.toString() + '=';
 
   const setAnswerVaule = v => {
     setAnswer(v);
@@ -205,21 +260,22 @@ function Question({data, index}){
           <button onClick={()=>input('1')}>1</button>
           <button onClick={()=>input('2')}>2</button>
           <button onClick={()=>input('3')}>3</button>
+          <button onClick={()=>input('back')}>{'<='}</button>
         </div>
         <div>
           <button onClick={()=>input('4')}>4</button>
           <button onClick={()=>input('5')}>5</button>
           <button onClick={()=>input('6')}>6</button>
+          <button onClick={()=>input('-')}>-</button>
         </div>
         <div>
           <button onClick={()=>input('7')}>7</button>
           <button onClick={()=>input('8')}>8</button>
           <button onClick={()=>input('9')}>9</button>
+          <button onClick={()=>input('0')}>0</button>
         </div>
         <div>
-          <button onClick={()=>input('back')}>{'<='}</button>
-          <button onClick={()=>input('0')}>0</button>
-          <button onClick={()=>input('close')}>x</button>
+          <button onClick={()=>input('close')}>X</button>
         </div>
       </div>)}
       {!keyboardOpen && (<button onClick={() => setKeyboardOpen(true)}>数字键盘</button>)}

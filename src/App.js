@@ -55,6 +55,8 @@ function App() {
             <button onClick={() => start('20+-')}>二十以内加减法</button>
             <br/>
             <button onClick={() => start('99*/')}>九九乘除法</button>
+            <br/>
+            <button onClick={() => start('+-*/')}>四则运算</button>
             <div className={Style.info}>
               谨以此程序向即忙工作又得完成老师布置的作业的宝爸宝妈们致敬！
               <br/>
